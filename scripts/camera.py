@@ -1,6 +1,4 @@
 import pygame as p
-from .values import Settings
-from .helperfunc import collision
 
 class Camera:
 	def __init__(self, game, pos, mapmaker = False):
@@ -23,6 +21,7 @@ class Camera:
 		
 		self.tile_surface = p.Surface(game.settings.windowSize, p.SRCALPHA)
 		self.ui_surface = p.Surface(game.settings.windowSize, p.SRCALPHA)
+		
 		
 	def update(self, game, draw = False):
 		
@@ -47,14 +46,12 @@ class Camera:
 		game.window.blit(self.tile_surface, (0, 0))
 		game.window.blit(self.ui_surface, (0, 0))
 		
-		
 	def viewpos(self, x, y):
 		
 		return [x - self.pos.x, y - self.pos.y]
 	def ui_blit(self, surface, pos):
 		
 		self.ui_surface.blit(surface, pos)
-	def tile_blit (self, sprite):
+	def tile_blit(self, sprite):
 		
-		if self.rect.colliderect(sprite.rect) and bool(sprite.visible):
-			self.tile_surface.blit(sprite.image, (sprite.pos[0] - self.pos.x, sprite.pos[1] - self.pos.y))
+		self.tile_surface.blit(sprite.image, (sprite.pos.elementwise() - self.pos.elementwise()))
