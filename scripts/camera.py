@@ -23,7 +23,7 @@ class Camera:
 		self.ui_surface = p.Surface(game.settings.windowSize, p.SRCALPHA)
 		
 		
-	def update(self, game, draw = False):
+	def update(self, game):
 		
 		if self.mapmaker:
 			self.rect.topleft = self.pos
@@ -34,24 +34,22 @@ class Camera:
 		if not self.static[1]:
 			self.pos.y = p.math.lerp(self.pos.y, min(max(game.player.pos.y-(game.settings.windowSize[1]/2), 0), self.map_boundaries[1] - self.rect.h), self.lerp_weight * game.dt)
 		
-		if draw:
-			self.draw_all(game)
 		
 		self.rect.topleft = self.pos
 	def draw_all(self, game):
 		
-		self.tile_surface.fill((0, 0, 0, 0))
-		self.ui_surface.fill((0, 0, 0, 0))
-		
 		game.window.blit(self.tile_surface, (0, 0))
 		game.window.blit(self.ui_surface, (0, 0))
+		
+		self.tile_surface.fill((0, 0, 0, 0))
+		self.ui_surface.fill((0, 0, 0, 0))
 		
 	def viewpos(self, x, y):
 		
 		return [x - self.pos.x, y - self.pos.y]
-	def ui_blit(self, surface, pos):
+	def ui_blit(self, sprite):
 		
-		self.ui_surface.blit(surface, pos)
+		self.ui_surface.blit(sprite.image, sprite.pos)
 	def tile_blit(self, sprite):
 		
 		self.tile_surface.blit(sprite.image, (sprite.pos.elementwise() - self.pos.elementwise()))

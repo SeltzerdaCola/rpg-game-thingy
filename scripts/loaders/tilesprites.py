@@ -98,26 +98,19 @@ class TileGroup(p.sprite.Group):
 		if new_layer:
 			self.sorted_sprites = {k: v for k, v in sorted(self.sorted_sprites.items())}
 	def draw_all(self, game):
-		blit_counter = 0
 		
 		for l in self.sorted_sprites:
 			for s in self.sorted_sprites[l]:
-				
 				if not s.alive():
 					self.sorted_sprites[l].remove(s)
 				if bool(s.visible):
 					game.camera.tile_blit(s)
-					blit_counter += 1
-		print(f"Tiles blitted: {blit_counter}")
 		
 class UiGroup(p.sprite.Group):
 	def __init__(self):
 		super().__init__()
 		
-		self.ui_sprites = []
-		
 	def draw_all(self, game):
-		
 		for s in self.sprites():
 			if bool(s.visible):
 				game.camera.ui_blit(s)
